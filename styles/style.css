@@ -16,6 +16,11 @@ html {
   font-family: 'Fira Sans Condensed', sans-serif;
   font-size: 18px;
   background-color: #1b1919;
+  
+  /* Шаг 1. Лейаут: центрируем контент */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 h1,
@@ -37,6 +42,17 @@ ol {
   list-style: none;
 }
 
+/* Шаг 4. Паттерн для скрытия элементов */
+.visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* Кастомный скроллбар */
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
@@ -48,4 +64,287 @@ ol {
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: #D9D9D9;
+}
+
+/* =========================================
+   Шаг 1. Лейаут (основная сетка)
+   ========================================= */
+.content {
+  display: flex;
+  align-items: flex-end;
+  gap: 30px;
+  width: 100%;
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.search-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.content__details {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+}
+
+.content__list-container {
+  height: 298px; /* Фиксированная высота */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Отступ между списком и кнопкой "Показать ещё" */
+  position: relative; /* Шаг 8. Контекст для прелоадера */
+}
+
+/* =========================================
+   Шаг 2. Уточнение размеров
+   ========================================= */
+.result__video-container {
+  width: 711px;
+  height: 386px;
+  margin-bottom: 16px;
+  position: relative; /* Шаг 8. Контекст для прелоадера */
+}
+
+.result__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.content__list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.content__video-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.content__video-card-thumbnail {
+  width: 194px;
+  height: 103px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.content__video-card-description-container {
+  flex-grow: 1;
+}
+
+/* =========================================
+   Шаг 3. Стили текстов
+   ========================================= */
+.search-form__fieldset-title {
+  font-size: 18px;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+
+.title {
+  font-size: 75px;
+  line-height: 0.9;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.content__accent {
+  color: #545050; /* Цвет из макета (серый) */
+}
+
+.content__card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block; /* Ссылка блочная для фона */
+}
+
+.content__video-card-title {
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Замена излишнего текста на ... */
+  margin-bottom: 5px;
+}
+
+.content__video-card-description {
+  font-size: 18px;
+  line-height: 1.1; /* Необычный интерлиньяж из макета */
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* Обрезаем текст после 4 строк */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* =========================================
+   Шаг 4. Формы
+   ========================================= */
+.search-form__checkbox-list {
+  display: flex;
+  gap: 15px;
+}
+
+.search-form__fieldset {
+  border: none;
+}
+
+.search-form__label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: fit-content;
+  cursor: pointer; /* Шаг 7 */
+}
+
+/* Хитрый фокус для текстового поля и лейблов */
+.search-form__label:has(:focus-visible) {
+  outline: 1px solid #fff;
+  outline-offset: 2px;
+}
+
+.search-form__textfield {
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  color: #fff;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 5px 0;
+  width: 225px;
+  outline: none;
+}
+
+.search-form__textfield::placeholder {
+  color: rgb(255 255 255 / 0.7);
+}
+
+.search-form__pseudo-checkbox {
+  width: 19px;
+  height: 19px;
+  border: 1px solid #fff;
+  padding: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-form__pseudo-checkbox::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  opacity: 0;
+}
+
+/* Состояние выбранного чекбокса */
+.search-form__checkbox:checked + .search-form__pseudo-checkbox::after {
+  opacity: 1;
+}
+
+/* Подчеркивание текста чекбокса при наведении на весь лейбл */
+.search-form__label:hover .search-form__label-text {
+  text-decoration: underline;
+}
+
+/* =========================================
+   Шаг 5. Кнопки
+   ========================================= */
+.button {
+  border: 1px solid #fff;
+  color: #fff;
+  font-family: inherit;
+  font-size: inherit;
+  background-color: transparent;
+  cursor: pointer; /* Шаг 7 */
+}
+
+.button:hover {
+  text-decoration: underline;
+}
+
+.button:active {
+  background-color: #545050;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.button:focus-visible {
+  outline: 1px solid #fff;
+  outline-offset: 2px;
+}
+
+.search-form__submit-button {
+  align-self: flex-end;
+  width: 194px;
+  height: 34px;
+}
+
+.more-button {
+  width: 100%;
+  height: 34px;
+}
+
+/* =========================================
+   Шаг 6. Состояния карточек
+   ========================================= */
+.content__list-item {
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.content__card-link_current {
+  background-color: #545050;
+}
+
+.content__card-link:active {
+  background-color: #545050;
+}
+
+.content__card-link:hover .content__video-card-title,
+.content__card-link:hover .content__video-card-description {
+  text-decoration: underline;
+}
+
+.content__card-link:focus {
+  outline: none;
+}
+
+.content__card-link:focus-visible {
+  outline: 1px solid #fff;
+}
+
+/* =========================================
+   Шаг 8. Прелоадеры
+   ========================================= */
+.preloader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #1b1919;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
 }
